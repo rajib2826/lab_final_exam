@@ -16,7 +16,6 @@
          text-align:center; 
       } 
  
-      
     </style> 
 </head> 
 <body> 
@@ -28,20 +27,6 @@
     $age = ""; 
     $password = ""; 
     $id = null; 
-    $update = false; 
-    if(isset($_GET['edit'])) 
-    { 
-      $update = true; 
-      $id = $_GET['edit']; 
-      $sql = "SELECT  username, name, age,  password FROM data WHERE id=$id"; 
-      $result = $conn->query($sql); 
-      $row = $result->fetch_assoc(); 
-      $username = $row['username']; 
-      $name = $row['name']; 
-      $age = $row['age']; 
-      $password = $row['password']; 
-           
-    } 
    ?> 
     <form action="index.php" method="post"> 
       <input type="hidden" name="id" value="<?php echo $id ?>"> 
@@ -49,11 +34,7 @@
        Name: <input type="text" name="name" value="<?php echo $name ?>"><br> 
        Age: <input type="text" name="age" value="<?php echo $age ?>"><br> 
        Password: <input type="password" name="password" value="<?php echo $password ?>"><br> 
-       <?php if($update): ?> 
-      <input type="submit" name="update" value="Update"> 
-      <?php else: ?> 
        <input type="submit" name="submit"> 
-       <?php endif ?> 
        <input type="submit" name="show" value="Show"> 
     </form> 
  
@@ -68,7 +49,7 @@
           if($result->num_rows > 0) 
           { 
             echo "<table class='table'> 
-               <th>Id</th> <th>User Name</th> <th >Name</th> <th>Age</th> <th>Update</th> <th>Delete</th>"; 
+               <th>Id</th> <th>User Name</th> <th >Name</th> <th>Age</th><th>Delete</th>"; 
             while($row = $result->fetch_assoc()) 
             { 
                $vID = $row['id']; 
@@ -77,7 +58,6 @@
                <td>".$row['username']."</td> 
                <td>".$row['name']."</td> 
                <td>".$row['age']."</td> 
-               <td><a href='index.php?edit=$vID'> edit </a></td>  
                <td><a href='index.php?delete=$vID'> delete </a></td></tr> 
                "; 
                 
@@ -106,18 +86,7 @@
            
       } 
  
-       elseif(isset($_POST['update'])) 
-       { 
-          $vID = $_POST['id']; 
-          $username = $_POST['username']; 
-          $name = $_POST['name']; 
-          $age = $_POST['age']; 
-          $password = $_POST['password']; 
- 
-          $sql = "UPDATE data SET username='$username', name='$name', age='$age', password='$password' where id='$vID' "; 
-          $conn->query($sql); 
-          view(); 
-       } 
+    
  
        elseif(isset($_GET['delete'])) 
        { 
